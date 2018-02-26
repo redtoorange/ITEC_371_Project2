@@ -34,6 +34,8 @@ public:
 	
 	//! Write the data into a a stream
 	void writeToFile(std::ofstream& stream) override;
+
+	const std::string& getContents() const;
 	
 private:
 	std::string fileContents;

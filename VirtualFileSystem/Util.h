@@ -17,21 +17,26 @@ const std::string PROG_EXTENSION = ".p";
 const std::string TEXT_EXTENSION = ".t";
 
 std::string cmd[] = {
-	"CreateDir", 
-	"CreateFile", 
-	"EndDir", 
-	"Quit",
+	"pwd",
 	"ls",
-	"pwd"
+	// cd <dir>
+	// cd ..
+	"mkdir",
+	"cat",
+	"createTextfile",
+	//run <program>
+	//start <program>
+	//step <program>
+	"quit",
 };
 
 enum Commands : int{
-	C_DIR = 0,
-	C_FILE = 1,
-	E_DIR = 2,
-	QUIT = 3,
-	LIST = 4,
-	PWD = 5
+	PWD = 0,
+	LIST = 1,
+	MKDIR = 2,
+	CAT = 3,
+	CREATE_TEXT = 4,
+	QUIT = 5
 };
 
 #endif

@@ -7,6 +7,7 @@
 #include "Directory.h"
 #include <iostream>
 #include <string>
+#include "TextFile.h"
 
 void Directory::addObject( std::shared_ptr<FSObject> obj)
 {
@@ -122,6 +123,41 @@ void Directory::printData(int tabs)
 	}
 }
 
+
+Directory* Directory::getDirectory(const std::string& name)
+{
+	if( name == "..")
+	{
+		return parent;
+	}
+		
+
+	for( auto& e : objects)
+	{
+		Directory* d = dynamic_cast<Directory*>(e.get());
+		if( d && d->getFileName() == name )
+		{
+			return d;
+		}
+	}
+
+	return nullptr;
+}
+
+
+TextFile* Directory::getTextfile(const std::string& name)
+{
+	for( auto& e : objects)
+	{
+		TextFile* t = dynamic_cast<TextFile*>(e.get());
+		if( t && (t->getFileName() == name || name == t->getFileName() + ".t" ) )
+		{
+			return t;
+		}
+	}
+
+	return nullptr;
+}
 
 void Directory::writeToFile(std::ofstream& stream)
 {

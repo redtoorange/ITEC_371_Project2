@@ -13,13 +13,13 @@ std::shared_ptr<TextFile> TextFile::makeTextFile(const std::string& name)
 	std::string n = name;
 	if( !validName(&n) )
 	{
-		std::cout << "Invalid program name!" << std::endl;
+		std::cout << "Invalid textfile name!" << std::endl;
 		return nullptr;
 	}
 
 	// Grab some contents for the file
 	std::string contents;
-	std::cout << "Enter contents>";
+	std::cout << "Enter file contents>";
 	std::getline(std::cin, contents);
 
 	// Return a fresh TextFile
@@ -106,4 +106,9 @@ void TextFile::writeToFile(std::ofstream& stream)
 
 	stream << fileContents;
 	stream << '\0';
+}
+
+const std::string& TextFile::getContents() const
+{
+	return fileContents;
 }

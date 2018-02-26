@@ -13,6 +13,7 @@
 #include <ostream>
 
 class File;
+class TextFile;
 
 /*!
 *	\brief The core of the FileSystem is a complex structure of directories.
@@ -52,6 +53,9 @@ public:
 	}
 
 	void printContents() const;
+
+	Directory* getDirectory(const std::string& name);
+	TextFile* getTextfile(const std::string& name);
 
 private:
 	//! All child objects of this DIR are stored here
