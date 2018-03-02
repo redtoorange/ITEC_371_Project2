@@ -225,6 +225,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ProgramFile.cpp" />
     <ClCompile Include="TextFile.cpp" />
+    <ClCompile Include="Util.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Directory.h" />

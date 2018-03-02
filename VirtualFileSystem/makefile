@@ -1,10 +1,13 @@
 CXX = g++
-CXXFLAGS = -std=c++11 -Wall
+CXXFLAGS = -std=c++11 
 
-OBJECTS =   FSObject.o Directory.o File.o ProgramFile.o TextFile.o main.o
+OBJECTS =   FSObject.o Directory.o File.o Util.o TextFile.o main.o
 
 all: $(OBJECTS)
-	$(CXX) $(CXXFLAGS) -static-libstdc++ -o RUFS main.o FSObject.o Directory.o File.o ProgramFile.o TextFile.o
+	$(CXX) $(CXXFLAGS) -static-libstdc++ -o RUFS main.o FSObject.o Directory.o File.o Util.o TextFile.o
+
+Util.o:
+	g++ $(CXXFLAGS) -c Util.cpp
 
 FSObject.o:
 	g++ $(CXXFLAGS) -c FSObject.cpp
@@ -14,9 +17,6 @@ Directory.o:
 
 File.o:
 	g++ $(CXXFLAGS) -c File.cpp
-
-ProgramFile.o:
-	g++ $(CXXFLAGS) -c ProgramFile.cpp
 
 TextFile.o:
 	g++ $(CXXFLAGS) -c TextFile.cpp

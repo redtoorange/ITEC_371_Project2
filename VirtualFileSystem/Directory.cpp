@@ -1,7 +1,7 @@
 ﻿/*
  *	Andrew McGuiness
- * ITEC 371 - Project 1
- * 2/8/2018
+ *	ITEC 371 - Project 2
+ *	3/2/2018
 */
 
 #include "Directory.h"
@@ -12,6 +12,7 @@
 void Directory::addObject( std::shared_ptr<FSObject> obj)
 {
 	objCount++;
+	// Create a new shared pointer in the collection
 	objects.emplace_back(obj);
 }
 
@@ -75,37 +76,7 @@ Directory* Directory::getParent()
 }
 
 void Directory::printData(int tabs)
-{
-	// Print the Dir based on the project spec, special
-	//	Case for the root folder handled.
-//	if( isRoot )
-//	{
-//		std::cout << fileName << ".d:" << std::endl;
-//		for( auto& e : objects)
-//		{
-//			e->printData(tabs);
-//		}
-//	}
-//	else
-//	{
-//		// Make some tabs for proper formatting
-//		std::string t;
-//		for( int i = 0; i < tabs; i++)
-//			t += "\t";
-//
-//		
-//		std::cout << t << "Beginning listing for " << fileName << std::endl;
-//		
-//		// Recursively print kids
-//		for( auto& e : objects)
-//		{
-//			e->printData(tabs + 1);
-//		}
-//		
-//		std::cout <<t <<  "Ending listing for " << fileName << std::endl;
-//	}
-
-		
+{		
 	std::cout << "Directory Name: " << fileName << std::endl;
 		
 	// Recursively print kids
@@ -126,14 +97,16 @@ void Directory::printData(int tabs)
 
 Directory* Directory::getDirectory(const std::string& name)
 {
+	// Handle special case for going up a dir
 	if( name == "..")
 	{
 		return parent;
 	}
 		
-
+	// Search through all children
 	for( auto& e : objects)
 	{
+		// Try to cast to a Dir, or nullptr if it fails
 		Directory* d = dynamic_cast<Directory*>(e.get());
 		if( d && d->getFileName() == name )
 		{
@@ -147,8 +120,10 @@ Directory* Directory::getDirectory(const std::string& name)
 
 TextFile* Directory::getTextfile(const std::string& name)
 {
+	// Search through all children to find one with a matching name
 	for( auto& e : objects)
 	{
+		// Try to cast to a TextFile, or nullptr if fails
 		TextFile* t = dynamic_cast<TextFile*>(e.get());
 		if( t && (t->getFileName() == name || name == t->getFileName() + ".t" ) )
 		{

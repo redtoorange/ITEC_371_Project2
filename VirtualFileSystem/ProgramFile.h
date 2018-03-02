@@ -1,7 +1,7 @@
 ﻿/*
  *	Andrew McGuiness
- * ITEC 371 - Project 1
- * 2/8/2018
+ *	ITEC 371 - Project 2
+ *	3/2/2018
 */
 
 #ifndef PROGRAM_FILE_H
@@ -11,8 +11,7 @@
 #include <memory>
 
 /*!
-*	\brief A special type of File that is designed to hold 
-*	metadata about a program.
+*	\brief NOT USED!!!!
 */
 class ProgramFile : public File
 {

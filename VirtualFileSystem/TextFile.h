@@ -1,7 +1,7 @@
 ﻿/*
  *	Andrew McGuiness
- * ITEC 371 - Project 1
- * 2/8/2018
+ *	ITEC 371 - Project 2
+ *	3/2/2018
 */
 
 #ifndef TEXT_FILE_H
@@ -35,6 +35,7 @@ public:
 	//! Write the data into a a stream
 	void writeToFile(std::ofstream& stream) override;
 
+	//! Get the file's contents
 	const std::string& getContents() const;
 	
 private:

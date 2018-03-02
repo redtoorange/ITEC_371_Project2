@@ -1,7 +1,7 @@
 ﻿/*
  *	Andrew McGuiness
- * ITEC 371 - Project 1
- * 2/8/2018
+ *	ITEC 371 - Project 2
+ *	3/2/2018
 */
 
 #include "TextFile.h"
@@ -85,12 +85,8 @@ TextFile::TextFile(const std::string& name, const std::string& contents)
 
 void TextFile::printData(int tabs)
 {
-	// Write some tabs for formatting
-//	std::string t;
-//	for( int i = 0; i < tabs; i++)
-//		t += "\t";
-
-	std::cout << "Filename:\t" << fileName << ".t\t Type: \t Text file" << std::endl;
+	// Write data specific to text files
+	std::cout << "Filename: " << fileName << ".t \tType: Text file" << std::endl;
 }
 
 void TextFile::writeToFile(std::ofstream& stream)

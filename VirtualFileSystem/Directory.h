@@ -1,7 +1,7 @@
 ﻿/*
  *	Andrew McGuiness
- * ITEC 371 - Project 1
- * 2/8/2018
+ *	ITEC 371 - Project 2
+ *	3/2/2018
 */
 
 #ifndef DIRECTORY_H
@@ -44,6 +44,7 @@ public:
 	//! Flatten this DIR and recursively flatten all Children
 	void writeToFile(std::ofstream& stream) override;
 	
+	//! Print the directory to std out using the formmating from the requirements
 	friend std::ostream& operator<<(std::ostream& os, const Directory& obj)
 	{
 		if( obj.parent )
@@ -52,9 +53,10 @@ public:
 		return os << obj.fileName;
 	}
 
-	void printContents() const;
-
+	//! Retrieve a sub direcotry from this directory by name.  Returns nullptr if nothing found.
 	Directory* getDirectory(const std::string& name);
+
+	//! Retrieve a textfile from this directory by name, the .t extension is optional. Returns nullptr if nothing found.
 	TextFile* getTextfile(const std::string& name);
 
 private:
@@ -64,10 +66,10 @@ private:
 	//! The Directory that THIS Dir is stored in
 	Directory* parent = nullptr;
 	
+	//! Flag this Dir if it's the root
 	bool isRoot = false;
+
+	//! Number of kids this Dir has
 	int objCount = 0;
 };
-
-
-
 #endif
