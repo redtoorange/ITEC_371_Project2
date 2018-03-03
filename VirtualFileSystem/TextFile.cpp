@@ -5,6 +5,7 @@
 */
 
 #include "TextFile.h"
+
 #include <iostream>
 
 std::shared_ptr<TextFile> TextFile::makeTextFile(const std::string& name)

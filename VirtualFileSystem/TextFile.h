@@ -8,6 +8,7 @@
 #define TEXT_FILE_H
 
 #include "File.h"
+
 #include <string>
 #include <memory>
 /*!
@@ -17,10 +18,10 @@
 class TextFile : public File
 {
 public:
-	//! Create a new TextFile given a name
+	//! Create a new TextFile given a name.  The user will be prompted to enter the file contents.
 	static std::shared_ptr<TextFile> makeTextFile( const std::string& name );
 	
-	//! Inflate a TextFile from a flat file
+	//! Inflate a TextFile from a flat file.
 	static std::shared_ptr<TextFile> inflateTextFile(  std::string& name, std::ifstream& stream);
 	
 	//! Check to see if the name follows the rules for a TextFile

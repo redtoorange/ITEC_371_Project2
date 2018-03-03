@@ -7,8 +7,9 @@
 #ifndef DIRECTORY_H
 #define DIRECTORY_H
 
-#include <vector>
 #include "FSObject.h"
+
+#include <vector>
 #include <memory>
 #include <ostream>
 
@@ -23,7 +24,7 @@ class TextFile;
 class Directory : public FSObject
 {
 public:
-	//! Create a new Directory and return a pointer to it
+	//! Create a new Directory and return a shared pointer to it.
 	static std::shared_ptr<Directory> CreateDirectory( std::string name, Directory* parent, bool root = false);
 	
 	//! Is the name valid for a Directory

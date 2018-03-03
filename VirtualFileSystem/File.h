@@ -15,6 +15,8 @@
 */
 class File : public FSObject
 {
+public:
+	virtual ~File() = default;
 };
 
 #endif

@@ -9,7 +9,6 @@
 
 #include "Util.h"
 #include "Directory.h"
-#include "ProgramFile.h"
 #include "TextFile.h"
 
 using  std::cout;
@@ -83,19 +82,121 @@ void tryToChangeDir( const std::string& dirName )
 	{
 		currentDirectory = dir;
 	}
+	else if(dirName == ".." && rootPointer == currentDirectory)
+	{
+		return;
+	}
 	else
 	{
-		// Special case handler for root
-		if( dirName == ".." && rootPointer == currentDirectory)
-		{
-			cout << "Cannot change to the parent of root." << std::endl;
-		}
 		// The dir wasn't found, let the user know
-		else
+		cout << "Could not change Directory to <" << dirName << ">" << std::endl;
+	}
+}
+
+/**!
+ *	\brief Search for a TextFile and print it's contents if it was found.
+ */
+void printTextFile(const string& fileName)
+{
+	// Try to get the file
+	TextFile* text = currentDirectory->getTextfile( fileName );
+
+	// Print the file if it exists
+	if( text )
+		cout << "Text file contents:\n" << text->getContents() << endl;
+	else
+		cout << "Could not read from <" << fileName << ">" << endl;
+}
+
+/**!
+ *	\brief Handle complex commands that take an argument
+ */
+bool handleCompound(Commands command, const std::string& input )
+{
+	// Get the length of the command + 1 for a space
+	const auto len = cmd[command].length()+1;
+	bool valid = input.length() > len && input[len-1] == ' ';
+	bool handled = true;
+
+	if( valid )
+	{
+		switch( command )
 		{
-			cout << "Could not change Directory to <" << dirName << ">" << std::endl;
+			case MKDIR:
+				createDir( input.substr(len));
+				break;
+
+			case CAT:
+				printTextFile(input.substr(len));
+				break;
+
+			case RUN:
+				cout << "Running " << input.substr(len) << endl;
+				break;
+
+			case START:
+				cout << "Starting " << input.substr(len) << endl;
+				break;
+
+			case STEP:
+				cout << "Stepping " << input.substr(len) << endl;
+				break;
+
+			case CD:
+				tryToChangeDir( input.substr(3) );
+				break;
+
+			default:
+				handled = false;
 		}
 	}
+	else
+	{
+		cout << "Error: Malformed input, <command filename/directory> is required format." << std::endl;
+	}
+
+	return handled;
+}
+
+/**!
+ *	\brief Handle simple commands that do not take any arguments.
+ */
+bool handleSimple(Commands command, const std::string& input )
+{
+	bool handled = true;
+
+	switch( command )
+	{
+		case CREATE_TEXT:
+			if( equalIC(input, "createtextfile"))
+				createTextFile();
+			else
+				cout << "Error: Malformed input, createTextFile takes no arguments." << std::endl;
+			break;
+
+		case LIST:
+			if( equalIC(input, "ls"))
+				currentDirectory->printData(0);
+			else
+				cout << "Error: Malformed input, <ls> is required format." << std::endl;
+			break;
+
+		case PWD:
+			if( equalIC(input, "pwd"))
+				cout << "Current directory is " << *currentDirectory << endl; 
+			else
+				cout << "Error: Malformed input, <pwd> is required format." << std::endl;	
+			break;
+
+		case QUIT:
+			running = false;
+			break;
+
+		default:
+			handled = false;
+	}
+
+	return handled;
 }
 
 /*!
@@ -103,127 +204,15 @@ void tryToChangeDir( const std::string& dirName )
 */
 bool executeCommand( Commands command, const std::string& input )
 {
-	// Get the length of the command + 1 for a space
-	const int len = cmd[command].length()+1;
-
-	// Handle execution of the program based on which command was entered
-	switch( command )
+	switch(command)
 	{
-	case MKDIR:
-		{
-			// Check that the format is valid
-			if( input.length() > len && input[len-1] == ' ')
-				createDir( input.substr(len));
-			else
-				cout << "Error: Malformed input, <mkdir filename> is required format." << std::endl;
-		}
-		break;
-
-	case CAT:
-		{
-			// Verify the format
-			if( input.length() > len && input[len-1] == ' ')
-			{
-				const string fileName = input.substr(len);
-
-				// Try to get the file
-				TextFile* text = currentDirectory->getTextfile( fileName );
-				if( text )
-				{
-					// Print the file if it exists
-					cout << "Text file contents:" << endl;
-					cout << text->getContents() << endl;;
-				}
-				else
-				{
-					cout << "Could not read from <" << fileName << ">" << endl;
-				}
-			}
-			else
-			{
-				cout << "Error: Malformed input, <cat filename> is required format." << std::endl;
-			}
-		}
-		break;
-
-	case CREATE_TEXT:
-		{
-			// Verify format before passing off control
-			if( equalIC(input, "createtextfile"))
-				createTextFile();
-			else
-				cout << "Error: Malformed input, createTextFile takes no arguments." << std::endl;
-		}
-		break;
-
-	case RUN:
-		{
-			// Verify format
-			if( input.length() > len && input[len-1] == ' ')
-				cout << "Running " << input.substr(len) << endl;
-			else
-				cout << "Error: Malformed input, filename required." << std::endl;
-		}
-		break;
-	case START:
-		{
-			// Verify format
-			if( input.length() > len && input[len-1] == ' ')
-				cout << "Starting " << input.substr(len) << endl;
-			else
-				cout << "Error: Malformed input, filename required." << std::endl;
-		}
-		break;
-	case STEP:
-		{
-			// Verify format
-			if( input.length() > len && input[len-1] == ' ')
-				cout << "Stepping " << input.substr(len) << endl;
-			else
-				cout << "Error: Malformed input, <cd filename> is required format." << std::endl;
-		}
-		break;
-	
-
-	case LIST:
-		{
-			// Verify Format
-			if( equalIC(input, "ls"))
-				currentDirectory->printData(0);
-			else
-				cout << "Error: Malformed input, <ls> is required format." << std::endl;
-		}
-		break;
-
-	case PWD:
-		{
-			// Verify format
-			if( equalIC(input, "pwd"))
-				cout << "Current directory is " << *currentDirectory << endl; 
-			else
-				cout << "Error: Malformed input, <pwd> is required format." << std::endl;	
-		}
-		break;
-
-	case CD:
-		{
-			// Verify format
-			if( input.length() > len && input[len-1] == ' ' )
-				tryToChangeDir( input.substr(3) );
-			else
-				cout << "Error: Malformed input, <cd directory> is required format." << std::endl;
-		}
-		break;
-
-	case QUIT:
-		running = false;
-		break;
-
-	default:
-		return false;
+		case MKDIR: case CAT: case RUN: case START: case STEP: case CD:
+			return handleCompound(command, input);
+		case CREATE_TEXT: case LIST: case PWD: case QUIT:
+			return handleSimple(command, input);
 	}
 
-	return true;
+	return false;
 }
 
 /*!
@@ -257,11 +246,10 @@ std::shared_ptr<Directory>  readInFile( const string& filename )
 		}
 
         // Prep an iterator
-		auto iter = parsed.end();
-		char ext = *--iter;
+		auto extension = parsed.substr(parsed.size()-2);
 
         // We found a directory
-		if( ext == 'd' && *--iter == '.')
+		if( extension == ".d" )
 		{
             // Special case for root.d
 			if( !currentDirectory )
@@ -289,11 +277,11 @@ std::shared_ptr<Directory>  readInFile( const string& filename )
 		}
 
         // We found a textfile
-		else if( ext == 't' && *--iter == '.')
+		else if( extension == ".t" )
 			currentDirectory->addObject( TextFile::inflateTextFile(parsed, inFile));
 
         // REMOVED: We found a program
-		//else if( ext == 'p' && *--iter == '.')
+		//else if( extension == ".p")
 		//	currentDirectory->addObject( ProgramFile::inflateProgramFile(parsed, inFile));
 	
         // found an endX token, close the current directory

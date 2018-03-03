@@ -5,9 +5,10 @@
 */
 
 #include "Directory.h"
+#include "TextFile.h"
+
 #include <iostream>
 #include <string>
-#include "TextFile.h"
 
 void Directory::addObject( std::shared_ptr<FSObject> obj)
 {
